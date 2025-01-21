@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
     const [email, setEmail] = useState('default@example.com'); // Default email
     const [password, setPassword] = useState('password123'); // Default password
     const [error, setError] = useState<string | null>(null);
+    const router = useRouter(); // Next.js router
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -18,7 +20,7 @@ export default function Login() {
 
         // Validate email format
         if (!emailRegex.test(email)) {
-            setError('Enter correct email');
+            setError('Enter a valid email');
             return;
         }
 
@@ -28,9 +30,11 @@ export default function Login() {
             return;
         }
 
-        // If validations pass
+        // If validations pass, redirect to the admin dashboard page
         alert(`Logged in successfully with:\nEmail: ${email}\nPassword: ${password}`);
-        // Add further login handling logic here
+
+        // Redirect to admin dashboard
+        router.push('/admin-dashboard');  // Navigate to admin dashboard
     };
 
     return (

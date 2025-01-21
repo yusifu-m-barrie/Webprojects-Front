@@ -12,20 +12,20 @@ const Login = () => {
         e.preventDefault();
 
         // Default email and password check
-        if (email === 'default@user.com' && password === 'password123') {
-            // Redirect to the User page
-            router.push(`/user?username=DefaultUser`);
+        if (email === 'admin@dashboard.com' && password === 'admin123') {
+            // Redirect to the Admin Dashboard
+            router.push(`/admin-dashboard`);
         } else {
             alert('Invalid email or password');
         }
     };
 
     return (
-        <div className="p-4 border rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-4">Login</h2>
+        <div className="p-4 border rounded-lg shadow-md max-w-sm mx-auto mt-10">
+            <h2 className="text-xl font-bold mb-4">Admin Login</h2>
             <form onSubmit={handleLogin}>
                 <div className="mb-3">
-                    <label className="block mb-1">Email</label>
+                    <label className="block mb-1 font-medium">Email</label>
                     <input
                         type="email"
                         value={email}
@@ -35,7 +35,7 @@ const Login = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="block mb-1">Password</label>
+                    <label className="block mb-1 font-medium">Password</label>
                     <input
                         type="password"
                         value={password}
