@@ -8,6 +8,7 @@ export default function Register() {
         firstName: '',
         lastName: '',
         email: '',
+        password: '', // Added password field
     });
 
     const [error, setError] = useState<string | null>(null);
@@ -31,6 +32,10 @@ export default function Register() {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
             return setError('Enter a valid email address');
         }
+        if (!formData.password) return setError('Password is required');
+        if (formData.password.length < 6) {
+            return setError('Password must be at least 6 characters long');
+        }
 
         try {
             const response = await fetch('http://localhost:8080/api/users', {
@@ -40,7 +45,7 @@ export default function Register() {
             });
 
             if (response.ok) {
-                setFormData({ firstName: '', lastName: '', email: '' }); // Reset form
+                setFormData({ firstName: '', lastName: '', email: '', password: '' }); // Reset form
                 setSuccessMessage('Registration successful!');
                 setError(null);
             } else {
@@ -54,13 +59,14 @@ export default function Register() {
         }
     };
 
-
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
             <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
                 <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Register</h1>
                 {error && <p className="mb-4 text-sm text-red-500 text-center">{error}</p>}
-                {successMessage && <p className="mb-4 text-sm text-green-500 text-center">{successMessage}</p>}
+                {successMessage && (
+                    <p className="mb-4 text-sm text-green-500 text-center">{successMessage}</p>
+                )}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
@@ -104,6 +110,23 @@ export default function Register() {
                             required
                         />
                     </div>
+                    <div>
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                        <p className="mt-1 text-sm text-gray-500">
+                            Password must be at least 6 characters long.
+                        </p>
+                    </div>
                     <button
                         type="submit"
                         className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -115,3 +138,4 @@ export default function Register() {
         </div>
     );
 }
+
